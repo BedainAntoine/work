@@ -44,7 +44,7 @@
 				<h1>Formulaire d'inscription</h1>
 			</div>
 			<div class="Form">
-				<form>
+				<form method="POST">
 					<label for="name">Votre nom :</label>
 					<div class="inp">
 						<input type="text" spellcheck="true" required="true" name="nom">
@@ -184,7 +184,7 @@ $BD_utilisateur = "bitnami";
 $BD_motDePasse  = "mdpdebian";
 $BD_base        = "workshop";
 
-$mysqli = $bdd->query('SELECT groupe FROM user WHERE id = :id');
+$mysqli = new PDO('mysql:host=localhost;dbname=workshop;charset=utf8', 'bitnami', 'mdpdebian');
 
 @mysqli_connect($BD_serveur, $BD_utilisateur, $BD_motDePasse)
     or die("Impossible de se connecter au serveur de bases de données.");
@@ -192,7 +192,7 @@ $mysqli = $bdd->query('SELECT groupe FROM user WHERE id = :id');
     or die("Impossible de se connecter à la base de données.");//fichier de log
  
 	//traitement du formulaire:
-	if(isset($_POST['adresseMail'],$_POST['mdp'])){
+	if(isset($_POST['adresseMail'],$_POST['mdp'],$_POST['sexe'],$_POST['prenom'],$_POST['nom'],$_POST['age'],$_POST['groupe'], $_POST['telephone'] )){
 		if(empty($_POST['adresseMail'])){
 			echo "Le champ adresse mail est vide.";
 		} elseif(!preg_match("^[a-z0-9]+([-._]?[a-z0-9]+)*+@?[a-z0-9]+([-._]?[a-z0-9]+)",$_POST['adresseMail'])){
@@ -206,7 +206,7 @@ $mysqli = $bdd->query('SELECT groupe FROM user WHERE id = :id');
 		} elseif(empty($_POST['telephone'])){
 			echo "Le champ telephone est vide.";
 		}
-		} elseif(mysqli_num_rows(mysqli_query($mysqli,"SELECT * FROM user WHERE adresseMail='".$_POST['adresseMail']."'"))==1){
+		} elseif(mysqli_num_rows(mysqli_query($mysqli,"SELECT * FROM utilisateur WHERE adresseMail='".$_POST['adresseMail']."'"))==1){
 			echo "Désolé, cette adresse email est déjà utilisée.";
 		} else {
 			if(!mysqli_query($mysqli, "INSERT INTO utilisateur SET adresseMail='".$_POST['adresseMail']."', mdp='".md5($_POST['mdp'])."', sexe='".$_POST['sexe']."', prenom='".$_POST['prenom']."', nom='".$_POST['nom']."', age='".$_POST['age']."', groupe='".$_POST['groupe']."', telephone='".$_POST['telephone']."'")){
