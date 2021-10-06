@@ -2,7 +2,7 @@
 
 try
 {
-	$bdd = new PDO('mysql:host=localhost;dbname=workshop;charset=utf8', 'bitnani', 'mdpdebian');
+	$bdd = new PDO('mysql:host=localhost;dbname=workshop;charset=utf8', 'bitnami', 'mdpdebian');
 }
 catch (Exception $e)
 {
